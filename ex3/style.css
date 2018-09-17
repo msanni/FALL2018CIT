@@ -1,0 +1,17 @@
+#submit {
+    margin-left: 50px;
+
+}
+
+label{
+    display: inline-block;
+    float: left;
+    clear: left;
+    width: 100px;
+    text-align: right;
+    padding-right:10px;
+}
+input {
+  display: inline-block;
+  float: left;
+}
