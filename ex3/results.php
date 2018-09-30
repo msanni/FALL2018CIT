@@ -24,7 +24,7 @@ spl_autoload_register('myClass');
 
     <?php echo "The Registered user's last name is: ".$thisLastname;?><br />
 
-    <?php echo "The Registered user's last name is: ".$thisEmail;?><br />
+    <?php echo "The Registered user's email address is: ".$thisEmail;?><br />
 <br />
 <hr>
 
