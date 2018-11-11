@@ -6,3 +6,5 @@ define('DB_HOST', 'localhost');
 define('DB_USER', 'msanni');
 define('DB_PASS', '1stAccount');
 define('DB_NAME', 'msanni_db');
+
+define('REQFIELD', '<font color="#FF0000">*</font>');
