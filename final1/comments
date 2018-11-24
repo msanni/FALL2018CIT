@@ -1,0 +1,162 @@
+<?php
+class CommentsController extends Controller{
+	public $commentObject;
+	  protected $access = "1";
+		public function index() {
+			$this->set('task', 'saveComment');
+	    }
+		public function saveComment(){
+		$this->commentObject = new Comment();
+		$data = array('uID'=>$_POST['uID'],'commentText'=>$_POST['comment'],'date'=>$_POST['date'],'postID'=>$_POST['pID']);
+		$result = $this->commentObject->addComments($data);
+		$this->set('message', $result);
+		}
+}
+?>
+
+___
+
+<?php
+class Comments extends Model{
+    function getComments($commentID){
+        $sql = 'SELECT k.commentID, k.uid, k.CommentText, k.date, p.pID u.first_name, u.last_name FROM comments k
+		INNER JOIN comments k on k.postID = p.pID
+		INNER JOIN users u on u.uID = k.uID
+		WHERE k.postID = ?
+		';
+        $results = $this->db->getrow($sql, array($commentID));
+        $comment = $results;
+        return $comment;
+    }
+    public function getAllComments($limit = 0){
+        if($limit > 0){
+            $numcomments = ' LIMIT '.$limit;
+        }
+        $sql = 'SELECT k.commentID, k.uid, k.CommentText, k.date, p.pID u.first_name, u.last_name FROM comments k
+		INNER JOIN comments k on k.postID = p.pID
+		INNER JOIN users u on u.uID = k.uID'.$numcomments;
+        // perform query
+        $results = $this->db->execute($sql);
+        while ($row=$results->fetchrow()) {
+            $comments[] = $row;
+        }
+        return $comments;
+    }
+    public function addComments($data){
+        $sql='INSERT INTO comments (uID,CommentText,date,postID) VALUES (?,?,?,?,1)';
+        $this->db->execute($sql,$data);
+        $message = 'Comment added.';
+        return $message;
+    }
+}
+___
+addComment.php
+
+<?php
+include('elements/header.php');?>
+
+<div class="container">
+	<div class="page-header">
+   <h1>Add Comment</h1>
+  </div>
+
+  <?php if($message){?>
+    <div class="alert alert-success">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    	<?php echo $message?>
+    </div>
+  <?php }?>
+
+  <div class="row">
+      <div class="span8">
+				<form action="<?php echo BASE_URL?>comments/<?php echo $task?>" method="post" onsubmit="editor.post()">
+
+
+	        <label for="date">Date</label>
+	        <?php // set timezone
+	date_default_timezone_set('America/Indiana/Indianapolis');?>
+	        <input name="date" id="date" size="16" type="date" value="<?php echo $date = date('Y-m-d H:i:s'); ?>"></br>
+
+
+
+	        <label>Content</label>
+	        <textarea id="tinyeditor" name="comment" style="width:556px;height: 200px"></textarea>
+	        <br/>
+	        <input type="hidden" name="uID" value="<?php echo $uID?>"/>
+	        <input type="hidden" name="postID" value="<?php echo $pID?>"/>
+
+	        <button id="submit" type="submit" class="btn btn-primary" >Submit</button>
+	      </form>
+
+
+      </div>
+    </div>
+</div>
+
+____
+comments.php
+
+<?php
+include('views/elements/header.php')
+;?>
+<div class="container">
+	<div class="page-header">
+   <h1>Comment</h1>
+
+	 <?php if($message){?>
+    <div class="alert alert-success">
+      	<?php echo $message?>
+    </div>
+  <?php }?>
+        ?>
+
+   <?php include('views/elements/comment_form.php');
+	 ?>
+
+
+   </div>
+</div>
+<?php include('views/elements/footer.php');?>
+
+___
+
+post.php
+
+<?php include('views/elements/header.php');?>
+<?php
+if( is_array($post) ) {
+    extract($post);
+}?>
+
+    <div class="container">
+        <div class="page-header">
+
+            <h1><?php echo $title;?></h1>
+        </div>
+        <p><?php echo $content;?></p>
+        <sub><?php echo 'Posted on ' . $date . ' by <a href="'.BASE_URL.'members/view/'. $uid.'">'. $first_name . ' ' . $last_name . '</a> in <a href="'.BASE_URL.'category/view/'. $categoryid.'">' . $name .'</a>'; ?>
+        </sub>
+
+
+    </div>
+    <div>
+    <?php echo $response ?>
+  </div>
+    <div class="row">
+        <div class="span8">
+
+          <a href="<?php echo BASE_URL;?> "comments/saveComment" class="btn btn-primary">Comment</a>
+        </div>
+      </div>
+<?php include('views/elements/footer.php');?>
+
+___
+
+password
+
+
+var password = $("#password").val();
+   var confirmPassword = $("#password2").val();
+   if (password != confirmPassword)
+
+   
