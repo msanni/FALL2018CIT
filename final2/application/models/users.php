@@ -44,7 +44,7 @@ public function isRegistered() {
 }
 
 public function isAdmin() {
-	if($this->user_type == '1') {
+	if($this->user_type == 1) {
 		return true;
 }
 	else {

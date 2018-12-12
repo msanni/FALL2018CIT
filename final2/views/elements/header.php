@@ -76,7 +76,7 @@
                                 if($u->isAdmin()) {
                                     ?>
                                     <li>
-                                        <a href="<?php echo BASE_URL?>manageposts/">Add Blog Post</a>
+                                        <a href="<?php echo BASE_URL?>manageposts/index">Manage Blog Posts</a>
                                     </li>
                                     <li>
                                         <a href="<?php echo BASE_URL?>manageusers/">Manage Users</a>
